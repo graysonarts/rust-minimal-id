@@ -1,0 +1,7 @@
+[package]
+name = "minimal-id"
+version = "0.1.0"
+authors = ["Russell Hay <me@russellhay.com>"]
+edition = "2018"
+
+[dependencies]
