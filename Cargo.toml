@@ -9,11 +9,11 @@ readme = "README.md"
 keywords = [ "database", "identity", "url", "id", "unique" ]
 categories = [ "data-structures", "development-tools", "web-programming" ]
 license = "MIT"
-is-it-maintained-issue-resolution = { repository="https://github.com/RussTheAerialist/rust-minimal-id"}
-is-it-maintained-open-issues = { repository="https://github.com/RussTheAerialist/rust-minimal-id" }
-maintenance = { status="actively-developed" }
 
 [dependencies]
 byteorder = "~1"
 data-encoding = "~2"
 rand = "~0"
+
+[dev-dependencies]
+rusty-hook = "~0"
