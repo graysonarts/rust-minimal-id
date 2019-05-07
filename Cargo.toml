@@ -6,5 +6,6 @@ edition = "2018"
 description = "A library that implements generating short, unique ids with minimal collisions and good locality"
 
 [dependencies]
-byteorder = "^1"
-rand = "^0"
+byteorder = "~1"
+data-encoding = "~2"
+rand = "~0"

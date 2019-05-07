@@ -2,6 +2,7 @@ mod seed;
 
 pub use seed::Seed;
 use rand::prelude::*;
+use data_encoding::BASE64URL_NOPAD;
 
 const ID_SIZE : usize = 9;
 
@@ -42,11 +43,16 @@ impl Generator {
 		let seed = Seed::new(0);
 		MinimalId::new(&seed)
 	}
-	pub fn id_from_str(&self, _id_str: &str) -> MinimalId { MinimalId::default() }
+	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> {
+		let value = BASE64URL_NOPAD.decode(id_str.as_bytes()).map_err(|_| ())?;
+		Ok(MinimalId::from_slice(&value))
+	 }
 }
 
 impl MinimalId {
-	pub fn to_string(&self) -> String { "".to_string() }
+	pub fn to_string(&self) -> String {
+		BASE64URL_NOPAD.encode(&self.value)
+	 }
 
 	pub fn to_slice(&self) -> &[u8] { &self.value }
 
@@ -63,6 +69,20 @@ impl MinimalId {
 			value
 		}
 	}
+
+	fn from_bytes(buf: [u8; ID_SIZE]) -> Self {
+		Self {
+			value: buf
+		}
+	}
+
+	fn from_slice(buf: &[u8]) -> Self {
+		let mut data : [u8; 9] = [0; 9];
+		data.copy_from_slice(buf);
+		Self {
+			value: data
+		}
+	}
 }
 
 #[cfg(test)]
@@ -74,15 +94,22 @@ mod tests {
 		let generator = Generator::default();
 		let id = generator.generate();
 		let id_str = id.to_string();
-		let id_int = id.to_slice();
-		let actual = generator.id_from_str(&id_str);
-		let actual_int = actual.to_slice();
-		// assert_eq!(id, actual);
-		// assert_eq!(id_int, actual_int);
+		let actual = generator.id_from_str(&id_str).expect("Unable to parse id string");
+		assert_eq!(id, actual);
 	}
 
 	#[test]
-	fn acceptance_test_generate_unique_ids() {
+	fn functional_serializes_to_encoded_string() {
+		let id = MinimalId::from_bytes([
+			0, 1, 2, 3, 4, 5, 6, 7, 8
+		]);
+		let expected_encoding = "AAECAwQFBgcI";
+
+		assert_eq!(id.to_string(), expected_encoding);
+	}
+
+	#[test]
+	fn functional_test_generate_unique_ids() {
 		let generator = Generator::default();
 		let id1 = generator.generate();
 		let id2 = generator.generate();

@@ -30,7 +30,7 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_seed_to_slice() {
+	fn functional_seed_to_slice() {
 		let seed = Seed::new(10<<24 | 20<<16 | 30 << 8 | 40);
 		let slc = seed.as_slice();
 		assert_eq!(slc.get(3), Some(&10));
