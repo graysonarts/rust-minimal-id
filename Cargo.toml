@@ -4,6 +4,14 @@ version = "0.1.0"
 authors = ["Russell Hay <me@russellhay.com>"]
 edition = "2018"
 description = "A library that implements generating short, unique ids with minimal collisions and good locality"
+repository = "https://github.com/RussTheAerialist/rust-minimal-id"
+readme = "README.md"
+keywords = [ "database", "identity", "url", "id", "unique" ]
+categories = [ "data-structures", "development-tools", "web-programming" ]
+license = "MIT"
+is-it-maintained-issue-resolution = { repository="https://github.com/RussTheAerialist/rust-minimal-id"}
+is-it-maintained-open-issues = { repository="https://github.com/RussTheAerialist/rust-minimal-id" }
+maintenance = { status="actively-developed" }
 
 [dependencies]
 byteorder = "~1"
