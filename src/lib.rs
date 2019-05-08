@@ -1,5 +1,21 @@
 #![doc(issue_tracker_base_url = "https://github.com/RussTheAerialist/rust-minimal-id/issues/")]
 
+/// This library generates a unique-ish id based on the current time and a random
+/// string, encoded using base64url.
+///
+/// This library was inspired by
+/// [How Long Does An Id Need To Be](https://eager.io/blog/how-long-does-an-id-need-to-be/)
+///
+/// # Examples
+///
+/// ```
+/// # use minimal_id::Generator;
+/// let generator = Generator::default();
+/// let id_1 = generator.generate();
+/// let id_2 = generator.generate();
+/// assert_ne!(id_1, id_2);
+/// ```
+
 mod seed;
 mod generator;
 
@@ -10,7 +26,6 @@ pub use seed::Seed;
 pub use generator::Generator;
 
 const ID_SIZE: usize = 9;
-
 
 /// # MinimalId
 /// ## Type for the id
