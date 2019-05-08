@@ -25,10 +25,17 @@ impl Seed {
 		}
 	}
 
-	/// Returns the seed as a byte array
+	/// Returns the seed as a byte array in Network endian
+	///
+	/// This does make copies of the data, but since it's only 4 bytes
+	/// we think it's an okay trade off.
 	pub fn as_slice(&self) -> [u8; 4] {
-		// TODO(#1): Force to Network Byte Order
-		unsafe { std::mem::transmute::<u32, [u8; 4]>(self.value) }
+		let mut data = vec![];
+		data.write_u32::<NetworkEndian>(self.value).expect("Cannot write seed");
+
+		let mut array = [0; 4];
+		array.copy_from_slice(&data[..4]);
+		array
 	}
 }
 
@@ -47,9 +54,9 @@ mod tests {
 	fn functional_seed_to_slice() {
 		let seed = Seed::new(10 << 24 | 20 << 16 | 30 << 8 | 40);
 		let slc = seed.as_slice();
-		assert_eq!(slc.get(3), Some(&10));
-		assert_eq!(slc.get(2), Some(&20));
-		assert_eq!(slc.get(1), Some(&30));
-		assert_eq!(slc.get(0), Some(&40));
+		assert_eq!(slc.get(0), Some(&10));
+		assert_eq!(slc.get(1), Some(&20));
+		assert_eq!(slc.get(2), Some(&30));
+		assert_eq!(slc.get(3), Some(&40));
 	}
 }
