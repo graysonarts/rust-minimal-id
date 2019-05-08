@@ -1,24 +1,16 @@
-#![doc(html_playground_url = "https://play.rust-lang.org/")]
 #![doc(issue_tracker_base_url = "https://github.com/RussTheAerialist/rust-minimal-id/issues/")]
 
 mod seed;
+mod generator;
 
-use data_encoding::BASE64URL_NOPAD;
 use rand::prelude::*;
+use data_encoding::BASE64URL_NOPAD;
+
 pub use seed::Seed;
+pub use generator::Generator;
 
 const ID_SIZE: usize = 9;
 
-/// # Generator
-/// ## top level structure for interfacing with the library
-///
-/// ## Examples
-/// ```
-/// use minimal_id::Generator;
-/// let generator = Generator::default();
-/// ```
-#[derive(PartialEq, Debug)]
-pub struct Generator {}
 
 /// # MinimalId
 /// ## Type for the id
@@ -33,14 +25,6 @@ pub struct Generator {}
 #[derive(PartialOrd)]
 pub struct MinimalId {
 	value: [u8; ID_SIZE],
-}
-
-impl Default for Generator {
-	/// Creates the generator
-	///
-	/// This doesn't really do anything other than contain the functions
-	/// This can probably be deleted.
-	fn default() -> Self { Generator {} }
 }
 
 impl Default for MinimalId {
@@ -64,30 +48,6 @@ impl std::fmt::Debug for MinimalId {
 	fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
 		self.to_slice().iter().for_each(|x| write!(f, "{:?}-", x).unwrap());
 		Ok(())
-	}
-}
-
-impl Generator {
-	/// Returns a new Minimal Id
-	pub fn generate(&self) -> MinimalId {
-		let seed = Seed::from_time();
-		MinimalId::new(&seed)
-	}
-
-	/// Parse a string into a minimal ID
-	///
-	/// ```
-	/// # use minimal_id::*;
-	/// # let generator = Generator::default();
-	/// let id = generator
-	/// 	.id_from_str("AAECAwQFBgcI")
-	/// 	.expect("Cannot parse String into ID");
-	/// assert_eq!(id.to_slice()[0], 0);
-	/// ```
-	// TODO(#3): Improve Error Handling
-	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> {
-		let value = BASE64URL_NOPAD.decode(id_str.as_bytes()).map_err(|_| ())?;
-		Ok(MinimalId::from_slice(&value))
 	}
 }
 
@@ -126,7 +86,7 @@ impl MinimalId {
 mod tests {
 	use super::*;
 
-	#[test(ignore = true)]
+	#[test]
 	fn acceptance_test_round_trip() {
 		let generator = Generator::default();
 		let id = generator.generate();
@@ -141,13 +101,5 @@ mod tests {
 		let expected_encoding = "AAECAwQFBgcI";
 
 		assert_eq!(id.to_string(), expected_encoding);
-	}
-
-	#[test]
-	fn functional_test_generate_unique_ids() {
-		let generator = Generator::default();
-		let id1 = generator.generate();
-		let id2 = generator.generate();
-		assert_ne!(id1, id2);
 	}
 }
