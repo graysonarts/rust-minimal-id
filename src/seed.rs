@@ -2,7 +2,7 @@ use byteorder::{NetworkEndian, WriteBytesExt};
 use std::time::SystemTime;
 
 /// Type representing the seed value
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Ord, PartialOrd)]
 pub struct Seed {
 	value: u32,
 }

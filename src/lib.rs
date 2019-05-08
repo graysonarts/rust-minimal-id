@@ -30,6 +30,7 @@ pub struct Generator {}
 /// let id: MinimalId = generator.generate();
 /// println!("{}", id.to_string());
 /// ```
+#[derive(PartialOrd)]
 pub struct MinimalId {
 	value: [u8; ID_SIZE],
 }
