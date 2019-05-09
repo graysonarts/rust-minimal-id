@@ -1,7 +1,8 @@
 #![doc(issue_tracker_base_url = "https://github.com/RussTheAerialist/rust-minimal-id/issues/")]
 
-/// This library generates a unique-ish id based on the current time and a random
-/// string, encoded using base64url.
+mod generator;
+/// This library generates a unique-ish id based on the current time and a
+/// random string, encoded using base64url.
 ///
 /// This library was inspired by
 /// [How Long Does An Id Need To Be](https://eager.io/blog/how-long-does-an-id-need-to-be/)
@@ -15,15 +16,13 @@
 /// let id_2 = generator.generate();
 /// assert_ne!(id_1, id_2);
 /// ```
-
 mod seed;
-mod generator;
 
-use rand::prelude::*;
 use data_encoding::BASE64URL_NOPAD;
+use rand::prelude::*;
 
-pub use seed::Seed;
 pub use generator::Generator;
+pub use seed::Seed;
 
 const ID_SIZE: usize = 9;
 
