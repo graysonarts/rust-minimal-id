@@ -1,4 +1,5 @@
 tag-prefix = "v"
 # pre-release-hook = "cargo test"
 pre-release-commit-message = "Release {{version}} 🎉🎉"
+pro-release-commit-message = "Starting {{next_version}} 🔥🔥"
 pre-release-replacements = [ {file="README.md", search="Current release: [a-z0-9\\.-]+", replace="Current release: {{version}}"} , {file ="Cargo.toml", search="branch=\"[a-z0-9\\.-]+\"", replace="branch=\"{{version}}\""} ]
