@@ -1,4 +1,3 @@
-no-dev-version = true
 tag-prefix = "v"
 # pre-release-hook = "cargo test"
 pre-release-commit-message = "Release {{version}} 🎉🎉"
