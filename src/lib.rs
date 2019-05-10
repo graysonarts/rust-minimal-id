@@ -36,7 +36,7 @@ const ID_SIZE: usize = 9;
 /// let id: MinimalId = generator.generate();
 /// println!("{}", id.to_string());
 /// ```
-#[derive(PartialOrd)]
+#[derive(PartialOrd, Eq, Hash)]
 pub struct MinimalId {
 	value: [u8; ID_SIZE],
 }
@@ -99,6 +99,7 @@ impl MinimalId {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use std::collections::HashSet;
 
 	#[test]
 	fn acceptance_test_round_trip() {
@@ -115,5 +116,18 @@ mod tests {
 		let expected_encoding = "AAECAwQFBgcI";
 
 		assert_eq!(id.to_string(), expected_encoding);
+	}
+
+	#[test]
+	/// This test validates that if we generate 1 million ids in fast order,
+	/// that we hit no collisions.  Since this is non-deterministic, it could cause problems.
+	///
+	/// based on benchmarks, this takes about 10 seconds
+	fn functional_validate_collisions() {
+		let seed = Seed::from_time();
+		let mut generated = HashSet::new();
+		let r = (0..1000000).fold(true, |acc, _| acc && generated.insert(MinimalId::new(&seed)));
+		assert!(r);
+
 	}
 }
