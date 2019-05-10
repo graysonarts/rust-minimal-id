@@ -133,7 +133,7 @@ mod tests {
 	fn functional_validate_collisions() {
 		let seed = Seed::from_time();
 		let mut generated = HashSet::new();
-		let r = (0..1000000).fold(true, |acc, _| acc && generated.insert(MinimalId::new(&seed)));
+		let r = (0..1_000_000).fold(true, |acc, _| acc && generated.insert(MinimalId::new(&seed)));
 		assert!(r);
 	}
 }

@@ -1,7 +1,6 @@
 #![feature(test)]
 extern crate test;
 use minimal_id::Generator;
-use std::thread::sleep_ms;
 use test::Bencher;
 
 #[bench]
@@ -17,7 +16,7 @@ fn validate_uniqueness(b: &mut Bencher) {
 	let generator = Generator::default();
 	let mut generated = std::collections::HashSet::new();
 	b.iter(|| {
-		(0..1000000).for_each(|_| {
+		(0..1_000_000).for_each(|_| {
 			generated.insert(generator.generate());
 		});
 	});
