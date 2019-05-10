@@ -120,7 +120,8 @@ mod tests {
 
 	#[test]
 	/// This test validates that if we generate 1 million ids in fast order,
-	/// that we hit no collisions.  Since this is non-deterministic, it could cause problems.
+	/// that we hit no collisions.  Since this is non-deterministic, it could
+	/// cause problems.
 	///
 	/// based on benchmarks, this takes about 10 seconds
 	fn functional_validate_collisions() {
@@ -128,6 +129,5 @@ mod tests {
 		let mut generated = HashSet::new();
 		let r = (0..1000000).fold(true, |acc, _| acc && generated.insert(MinimalId::new(&seed)));
 		assert!(r);
-
 	}
 }
