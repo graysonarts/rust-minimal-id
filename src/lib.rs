@@ -20,6 +20,7 @@ mod seed;
 
 use data_encoding::BASE64URL_NOPAD;
 use rand::prelude::*;
+use std::hash::{Hash, Hasher};
 
 pub use generator::Generator;
 pub use seed::Seed;
@@ -36,7 +37,7 @@ const ID_SIZE: usize = 9;
 /// let id: MinimalId = generator.generate();
 /// println!("{}", id.to_string());
 /// ```
-#[derive(PartialOrd, Eq, Hash)]
+#[derive(PartialOrd, Eq)]
 pub struct MinimalId {
 	value: [u8; ID_SIZE],
 }
@@ -56,6 +57,10 @@ impl Default for MinimalId {
 
 impl PartialEq for MinimalId {
 	fn eq(&self, rhs: &Self) -> bool { self.value.iter().zip(rhs.value.iter()).all(|(x, y)| x == y) }
+}
+
+impl Hash for MinimalId {
+	fn hash<H: Hasher>(&self, state: &mut H) { self.value.hash(state); }
 }
 
 impl std::fmt::Debug for MinimalId {
@@ -86,7 +91,8 @@ impl MinimalId {
 	}
 
 	/// Creates a new MinimalId from the raw byte array
-	fn from_bytes(buf: [u8; ID_SIZE]) -> Self { Self { value: buf } }
+	#[cfg(test)]
+	pub(crate) fn from_bytes(buf: [u8; ID_SIZE]) -> Self { Self { value: buf } }
 
 	/// Creates a new MinimalId from a slice of u8s
 	fn from_slice(buf: &[u8]) -> Self {
