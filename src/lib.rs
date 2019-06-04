@@ -37,7 +37,7 @@ const ID_SIZE: usize = 9;
 /// let id: MinimalId = generator.generate();
 /// println!("{}", id.to_string());
 /// ```
-#[derive(PartialOrd, Eq)]
+#[derive(PartialOrd, Eq, Clone)]
 pub struct MinimalId {
 	value: [u8; ID_SIZE],
 }
@@ -122,6 +122,14 @@ mod tests {
 		let expected_encoding = "AAECAwQFBgcI";
 
 		assert_eq!(id.to_string(), expected_encoding);
+	}
+
+	#[test]
+	fn can_clone_minimal_id() {
+		let id = MinimalId::from_bytes([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+		let id2 = id.clone();
+
+		assert_eq!(id, id2);
 	}
 
 	#[test]
