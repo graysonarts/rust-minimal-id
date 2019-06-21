@@ -90,7 +90,7 @@ impl MinimalId {
 		Self { value }
 	}
 
-		/// Parse a string into a minimal ID
+	/// Parse a string into a minimal ID
 	///
 	/// ```
 	/// # use minimal_id::*;

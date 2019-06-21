@@ -38,9 +38,7 @@ impl Generator {
 	/// assert_eq!(id.to_slice()[0], 0);
 	/// ```
 	// TODO(#3): Improve Error Handling
-	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> {
-		MinimalId::id_from_str(id_str)
-	}
+	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> { MinimalId::id_from_str(id_str) }
 }
 
 #[cfg(test)]
