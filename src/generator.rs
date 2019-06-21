@@ -1,8 +1,6 @@
 use super::MinimalId;
 use super::Seed;
 
-use data_encoding::BASE64URL_NOPAD;
-
 /// # Generator
 ///
 /// top level structure for interfacing with the library
@@ -41,8 +39,7 @@ impl Generator {
 	/// ```
 	// TODO(#3): Improve Error Handling
 	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> {
-		let value = BASE64URL_NOPAD.decode(id_str.as_bytes()).map_err(|_| ())?;
-		Ok(MinimalId::from_slice(&value))
+		MinimalId::id_from_str(id_str)
 	}
 }
 

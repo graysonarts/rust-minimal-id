@@ -37,7 +37,7 @@ const ID_SIZE: usize = 9;
 /// let id: MinimalId = generator.generate();
 /// println!("{}", id.to_string());
 /// ```
-#[derive(PartialOrd, Eq, Clone)]
+#[derive(PartialOrd, Eq, Copy, Clone)]
 pub struct MinimalId {
 	value: [u8; ID_SIZE],
 }
@@ -88,6 +88,24 @@ impl MinimalId {
 		value.copy_from_slice(vec.as_slice());
 
 		Self { value }
+	}
+
+		/// Parse a string into a minimal ID
+	///
+	/// ```
+	/// # use minimal_id::*;
+	/// let id = MinimalId::id_from_str("AAECAwQFBgcI")
+	/// 	.expect("Cannot parse String into ID");
+	/// assert_eq!(id.to_slice()[0], 0);
+	/// ```
+	// TODO(#3): Improve Error Handling
+	pub fn id_from_str(id_str: &str) -> Result<Self, ()> {
+		let value = BASE64URL_NOPAD.decode(id_str.as_bytes()).map_err(|_| ())?;
+		if value.len() == ID_SIZE {
+			Ok(Self::from_slice(&value))
+		} else {
+			Err(())
+		}
 	}
 
 	/// Creates a new MinimalId from the raw byte array
