@@ -1,6 +1,5 @@
 #![doc(issue_tracker_base_url = "https://github.com/RussTheAerialist/rust-minimal-id/issues/")]
 
-mod generator;
 /// This library generates a unique-ish id based on the current time and a
 /// random string, encoded using base64url.
 ///
@@ -16,6 +15,9 @@ mod generator;
 /// let id_2 = generator.generate();
 /// assert_ne!(id_1, id_2);
 /// ```
+mod generator;
+#[cfg(feature = "juniper")]
+pub mod juniper_feature;
 mod seed;
 
 use data_encoding::BASE64URL_NOPAD;
