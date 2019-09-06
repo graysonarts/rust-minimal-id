@@ -18,6 +18,8 @@
 mod generator;
 #[cfg(feature = "juniper")]
 pub mod juniper_feature;
+#[cfg(feature = "json")]
+pub mod serde_feature;
 mod seed;
 
 use data_encoding::BASE64URL_NOPAD;
@@ -96,12 +98,12 @@ impl MinimalId {
 	///
 	/// ```
 	/// # use minimal_id::*;
-	/// let id = MinimalId::id_from_str("AAECAwQFBgcI")
+	/// let id = MinimalId::from_str("AAECAwQFBgcI")
 	/// 	.expect("Cannot parse String into ID");
 	/// assert_eq!(id.to_slice()[0], 0);
 	/// ```
 	// TODO(#3): Improve Error Handling
-	pub fn id_from_str(id_str: &str) -> Result<Self, ()> {
+	pub fn from_str(id_str: &str) -> Result<Self, ()> {
 		let value = BASE64URL_NOPAD.decode(id_str.as_bytes()).map_err(|_| ())?;
 		if value.len() == ID_SIZE {
 			Ok(Self::from_slice(&value))
@@ -109,6 +111,11 @@ impl MinimalId {
 			Err(())
 		}
 	}
+
+    /// calls from_str, leaving for backwards compatibility
+    pub fn id_from_str(id_str: &str) -> Result<Self, ()> {
+        Self::from_str(id_str)
+    }
 
 	/// Creates a new MinimalId from the raw byte array
 	#[cfg(test)]
@@ -152,6 +159,7 @@ mod tests {
 		assert_eq!(id, id2);
 	}
 
+    #[ignore]
 	#[test]
 	/// This test validates that if we generate 1 million ids in fast order,
 	/// that we hit no collisions.  Since this is non-deterministic, it could
