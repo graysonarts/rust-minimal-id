@@ -18,9 +18,9 @@
 mod generator;
 #[cfg(feature = "juniper")]
 pub mod juniper_feature;
+mod seed;
 #[cfg(feature = "json")]
 pub mod serde_feature;
-mod seed;
 
 use data_encoding::BASE64URL_NOPAD;
 use rand::prelude::*;
@@ -112,10 +112,8 @@ impl MinimalId {
 		}
 	}
 
-    /// calls from_str, leaving for backwards compatibility
-    pub fn id_from_str(id_str: &str) -> Result<Self, ()> {
-        Self::from_str(id_str)
-    }
+	/// calls from_str, leaving for backwards compatibility
+	pub fn id_from_str(id_str: &str) -> Result<Self, ()> { Self::from_str(id_str) }
 
 	/// Creates a new MinimalId from the raw byte array
 	#[cfg(test)]
@@ -159,7 +157,7 @@ mod tests {
 		assert_eq!(id, id2);
 	}
 
-    #[ignore]
+	#[ignore]
 	#[test]
 	/// This test validates that if we generate 1 million ids in fast order,
 	/// that we hit no collisions.  Since this is non-deterministic, it could
