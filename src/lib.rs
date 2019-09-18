@@ -64,15 +64,11 @@ impl PartialEq for MinimalId {
 }
 
 impl From<&str> for MinimalId {
-	fn from(id: &str) -> Self {
-		MinimalId::from_str(id).unwrap_or(MinimalId::default())
-	}
+	fn from(id: &str) -> Self { MinimalId::from_str(id).unwrap_or(MinimalId::default()) }
 }
 
 impl Into<String> for MinimalId {
-	fn into(self) -> String {
-		self.to_string()
-	}
+	fn into(self) -> String { self.to_string() }
 }
 
 impl Hash for MinimalId {
@@ -186,16 +182,15 @@ mod tests {
 	#[test]
 	fn str_slice_into_minimal_id() {
 		let idstr = "123456789abc";
-		let id : MinimalId = idstr.into();
+		let id: MinimalId = idstr.into();
 
 		assert_eq!(id.to_string(), idstr);
 	}
 
 	#[test]
 	fn minimal_id_into_string() {
-		let id = MinimalId::from_str("cba987654321")
-			.expect("Unable to parse sample id");
-		let strid : String = id.into();
+		let id = MinimalId::from_str("cba987654321").expect("Unable to parse sample id");
+		let strid: String = id.into();
 
 		assert_eq!(strid, "cba987654321");
 	}
