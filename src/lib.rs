@@ -63,6 +63,18 @@ impl PartialEq for MinimalId {
 	fn eq(&self, rhs: &Self) -> bool { self.value.iter().zip(rhs.value.iter()).all(|(x, y)| x == y) }
 }
 
+impl From<&str> for MinimalId {
+	fn from(id: &str) -> Self {
+		MinimalId::from_str(id).unwrap_or(MinimalId::default())
+	}
+}
+
+impl Into<String> for MinimalId {
+	fn into(self) -> String {
+		self.to_string()
+	}
+}
+
 impl Hash for MinimalId {
 	fn hash<H: Hasher>(&self, state: &mut H) { self.value.hash(state); }
 }
@@ -169,5 +181,22 @@ mod tests {
 		let mut generated = HashSet::new();
 		let r = (0..1_000_000).fold(true, |acc, _| acc && generated.insert(MinimalId::new(&seed)));
 		assert!(r);
+	}
+
+	#[test]
+	fn str_slice_into_minimal_id() {
+		let idstr = "123456789abc";
+		let id : MinimalId = idstr.into();
+
+		assert_eq!(id.to_string(), idstr);
+	}
+
+	#[test]
+	fn minimal_id_into_string() {
+		let id = MinimalId::from_str("cba987654321")
+			.expect("Unable to parse sample id");
+		let strid : String = id.into();
+
+		assert_eq!(strid, "cba987654321");
 	}
 }
