@@ -24,6 +24,7 @@ pub mod serde_feature;
 
 use data_encoding::BASE64URL_NOPAD;
 use rand::prelude::*;
+use std::fmt;
 use std::hash::{Hash, Hasher};
 
 pub use generator::Generator;
@@ -75,11 +76,15 @@ impl Hash for MinimalId {
 	fn hash<H: Hasher>(&self, state: &mut H) { self.value.hash(state); }
 }
 
-impl std::fmt::Debug for MinimalId {
-	fn fmt(&self, f: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> {
+impl fmt::Debug for MinimalId {
+	fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
 		self.to_slice().iter().for_each(|x| write!(f, "{:?}-", x).unwrap());
 		Ok(())
 	}
+}
+
+impl fmt::Display for MinimalId {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> { f.write_str(&self.to_string()) }
 }
 
 impl MinimalId {
@@ -193,5 +198,12 @@ mod tests {
 		let strid: String = id.into();
 
 		assert_eq!(strid, "cba987654321");
+	}
+
+	#[test]
+	fn minimal_id_fmt_display() {
+		let id = MinimalId::from_str("cba987654321").expect("Unable to parse sample id");
+		let actual = format!("{}", id);
+		assert_eq!(actual, "cba987654321");
 	}
 }
