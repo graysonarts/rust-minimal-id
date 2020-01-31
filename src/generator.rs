@@ -22,7 +22,7 @@ impl Default for Generator {
 
 impl Generator {
 	/// Returns a new Minimal Id
-	#[deprecated(since = "0.7.1", note = "Use Generator::new_id or MinimalId::generate")]
+	#[deprecated(since = "0.8.0", note = "Use Generator::new_id or MinimalId::generate")]
 	pub fn generate(&self) -> MinimalId { Generator::new_id() }
 
 	/// Parse a string into a minimal ID
