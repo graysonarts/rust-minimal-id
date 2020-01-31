@@ -22,10 +22,8 @@ impl Default for Generator {
 
 impl Generator {
 	/// Returns a new Minimal Id
-    #[deprecated(since = "0.7.1", note = "Use Generator::new_id or MinimalId::generate")]
-	pub fn generate(&self) -> MinimalId {
-        Generator::new_id()
-	}
+	#[deprecated(since = "0.7.1", note = "Use Generator::new_id or MinimalId::generate")]
+	pub fn generate(&self) -> MinimalId { Generator::new_id() }
 
 	/// Parse a string into a minimal ID
 	///
@@ -40,10 +38,10 @@ impl Generator {
 	// TODO(#3): Improve Error Handling
 	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> { MinimalId::id_from_str(id_str) }
 
-    pub fn new_id() -> MinimalId {
-        let seed = Seed::from_time();
-        MinimalId::new(&seed)
-    }
+	pub fn new_id() -> MinimalId {
+		let seed = Seed::from_time();
+		MinimalId::new(&seed)
+	}
 }
 
 #[cfg(test)]

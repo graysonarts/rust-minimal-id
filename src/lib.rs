@@ -23,9 +23,9 @@ pub mod serde_feature;
 
 use data_encoding::BASE64URL_NOPAD;
 use rand::prelude::*;
+use std::convert::TryFrom;
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::convert::TryFrom;
 
 pub use generator::Generator;
 pub use seed::Seed;
@@ -148,7 +148,7 @@ mod tests {
 	fn acceptance_test_round_trip() {
 		let id = Generator::new_id();
 		let id_string = id.to_string();
-        let id_str : &str = &id_string;
+		let id_str: &str = &id_string;
 		let actual = MinimalId::try_from(id_str).expect("Unable to parse id string");
 		assert_eq!(id, actual);
 	}
