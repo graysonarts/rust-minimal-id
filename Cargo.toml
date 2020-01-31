@@ -1,6 +1,6 @@
 [package]
 name = "minimal-id"
-version = "0.7.1-alpha.0"
+version = "0.8.0"
 authors = ["Russell Hay <me@russellhay.com>"]
 edition = "2018"
 description = "A library that implements generating short, unique ids with minimal collisions and good locality"
