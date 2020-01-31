@@ -10,9 +10,8 @@
 ///
 /// ```
 /// # use minimal_id::Generator;
-/// let generator = Generator::default();
-/// let id_1 = generator.generate();
-/// let id_2 = generator.generate();
+/// let id_1 = Generator::new_id();
+/// let id_2 = Generator::new_id();
 /// assert_ne!(id_1, id_2);
 /// ```
 mod generator;
@@ -26,6 +25,7 @@ use data_encoding::BASE64URL_NOPAD;
 use rand::prelude::*;
 use std::fmt;
 use std::hash::{Hash, Hasher};
+use std::convert::TryFrom;
 
 pub use generator::Generator;
 pub use seed::Seed;
@@ -38,8 +38,7 @@ const ID_SIZE: usize = 9;
 /// ## Examples
 /// ```
 /// # use minimal_id::*;
-/// let generator = Generator::default();
-/// let id: MinimalId = generator.generate();
+/// let id: MinimalId = Generator::new_id();
 /// println!("{}", id.to_string());
 /// ```
 #[derive(PartialOrd, Eq, Copy, Clone)]
@@ -147,10 +146,10 @@ mod tests {
 
 	#[test]
 	fn acceptance_test_round_trip() {
-		let generator = Generator::default();
-		let id = generator.generate();
-		let id_str = id.to_string();
-		let actual = generator.id_from_str(&id_str).expect("Unable to parse id string");
+		let id = Generator::new_id();
+		let id_string = id.to_string();
+        let id_str : &str = &id_string;
+		let actual = MinimalId::try_from(id_str).expect("Unable to parse id string");
 		assert_eq!(id, actual);
 	}
 

@@ -7,7 +7,7 @@ use super::Seed;
 ///
 /// ```
 /// use minimal_id::Generator;
-/// let generator = Generator::default();
+/// let id = Generator::new_id();
 /// ```
 #[derive(PartialEq, Debug)]
 pub struct Generator {}
@@ -22,9 +22,9 @@ impl Default for Generator {
 
 impl Generator {
 	/// Returns a new Minimal Id
+    #[deprecated(since = "0.7.1", note = "Use Generator::new_id or MinimalId::generate")]
 	pub fn generate(&self) -> MinimalId {
-		let seed = Seed::from_time();
-		MinimalId::new(&seed)
+        Generator::new_id()
 	}
 
 	/// Parse a string into a minimal ID
@@ -39,6 +39,11 @@ impl Generator {
 	/// ```
 	// TODO(#3): Improve Error Handling
 	pub fn id_from_str(&self, id_str: &str) -> Result<MinimalId, ()> { MinimalId::id_from_str(id_str) }
+
+    pub fn new_id() -> MinimalId {
+        let seed = Seed::from_time();
+        MinimalId::new(&seed)
+    }
 }
 
 #[cfg(test)]
@@ -47,9 +52,8 @@ mod tests {
 
 	#[test]
 	fn functional_test_generate_unique_ids() {
-		let generator = Generator::default();
-		let id1 = generator.generate();
-		let id2 = generator.generate();
+		let id1 = Generator::new_id();
+		let id2 = Generator::new_id();
 		assert_ne!(id1, id2);
 	}
 }
